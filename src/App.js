@@ -9,6 +9,8 @@ const TWITTER_HANDLE = "TJshonanbeach";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = "";
 const TOTAL_MINT_COUNT = 50;
+const CONTRACT_ADDRESS = "0x8Eda27265769c51a893019c92cf5A79Fc14998eb";
+
 const App = () => {
   /*
    * ユーザーのウォレットアドレスを格納するために使用する状態変数を定義します。
@@ -42,6 +44,13 @@ const App = () => {
     } else {
       console.log("No authorized account found");
     }
+    let chainId = await ethereum.request({ method: "eth_chainId" });
+    console.log("Connected to chain " + chainId);
+    // 0x4 は　Rinkeby の ID です。
+    const rinkebyChainId = "0x4";
+    if (chainId !== rinkebyChainId) {
+      alert("You are not connected to the Rinkeby Test Network!");
+    }
   };
 
   /*
@@ -53,15 +62,6 @@ const App = () => {
       if (!ethereum) {
         alert("Get MetaMask!");
         return;
-      }
-
-      // Section4 Lesson1, Rinkeby以外のネットワークの時、NGを出す
-      let chainId = await ethereum.request({ method: "eth_chainId" });
-      console.log("Connected to chain " + chainId);
-      // 0x4 は　Rinkeby の ID です。
-      const rinkebyChainId = "0x4";
-      if (chainId !== rinkebyChainId) {
-        alert("You are not connected to the Rinkeby Test Network!");
       }
 
       /*
@@ -112,8 +112,6 @@ const App = () => {
    }
   };
   const askContractToMintNft = async () => {
-    const CONTRACT_ADDRESS =
-      "0x8Eda27265769c51a893019c92cf5A79Fc14998eb";
     try {
       const { ethereum } = window;
       if (ethereum) {
